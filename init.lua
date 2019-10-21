@@ -2,19 +2,26 @@
 -- (c) orwell96 and contributors
 
 --flat
-advtrains.register_tracks("line", {
-	nodename_prefix="advtrains:ltrack",
+
+local function suitable_substrate(upos)
+	return minetest.registered_nodes[minetest.get_node(upos).name] and (minetest.registered_nodes[minetest.get_node(upos).name].liquidtype == "source")
+end
+
+advtrains.register_tracks("waterline", {
+	nodename_prefix="linetrack:watertrack",
 	texture_prefix="advtrains_ltrack",
 	models_prefix="advtrains_ltrack",
 	models_suffix=".obj",
 	shared_texture="linetrack_line.png",
-	description=attrans("Line Track"),
+	description=attrans("Water Line Track"),
 	formats={},
+	liquids_pointable=true,
+	suitable_substrate=suitable_substrate,
 	get_additional_definiton = function(def, preset, suffix, rotation)
 		return {
 			groups = {
 				advtrains_track=1,
-				advtrains_track_line=1,
+				advtrains_track_waterline=1,
 				save_in_at_nodedb=1,
 				dig_immediate=2,
 				not_in_creative_inventory=1,
@@ -25,19 +32,21 @@ advtrains.register_tracks("line", {
 	end
 }, advtrains.ap.t_30deg_flat)
 --slopes
-advtrains.register_tracks("line", {
-	nodename_prefix="advtrains:ltrack",
+advtrains.register_tracks("waterline", {
+	nodename_prefix="linetrack:watertrack",
 	texture_prefix="advtrains_ltrack",
 	models_prefix="advtrains_ltrack",
 	models_suffix=".obj",
 	shared_texture="linetrack_line.png",
 	description=attrans("Line Track"),
 	formats={vst1={true, false, true}, vst2={true, false, true}, vst31={true}, vst32={true}, vst33={true}},
+	liquids_pointable=true,
+	suitable_substrate=suitable_substrate,
 	get_additional_definiton = function(def, preset, suffix, rotation)
 		return {
 			groups = {
 				advtrains_track=1,
-				advtrains_track_line=1,
+				advtrains_track_waterline=1,
 				save_in_at_nodedb=1,
 				dig_immediate=2,
 				not_in_creative_inventory=1,
@@ -49,14 +58,16 @@ advtrains.register_tracks("line", {
 }, advtrains.ap.t_30deg_slope)
 
 if atlatc ~= nil then
-	advtrains.register_tracks("line", {
-		nodename_prefix="advtrains:ltrack_lua",
+	advtrains.register_tracks("waterline", {
+		nodename_prefix="linetrack:watertrack_lua",
 		texture_prefix="advtrains_ltrack_lua",
 		models_prefix="advtrains_ltrack",
 		models_suffix=".obj",
 		shared_texture="linetrack_lua.png",
 		description=atltrans("LuaAutomation ATC Line"),
 		formats={},
+		liquids_pointable=true,
+		suitable_substrate=suitable_substrate,
 		get_additional_definiton = function(def, preset, suffix, rotation)
 			return {
 				after_place_node = atlatc.active.after_place_node,
@@ -88,7 +99,7 @@ if atlatc ~= nil then
 				},
 				groups = {
 					advtrains_track=1,
-					advtrains_track_line=1,
+					advtrains_track_waterline=1,
 					save_in_at_nodedb=1,
 					dig_immediate=2,
 					not_in_creative_inventory=1,
@@ -103,14 +114,16 @@ end
 if minetest.get_modpath("advtrains_line_automation") ~= nil then
 	local adef = minetest.registered_nodes["advtrains_line_automation:dtrack_stop_st"]
 	
-	advtrains.register_tracks("line", {
-		nodename_prefix="advtrains:ltrack_stn",
+	advtrains.register_tracks("waterline", {
+		nodename_prefix="linetrack:watertrack_stn",
 		texture_prefix="advtrains_ltrack_stn",
 		models_prefix="advtrains_ltrack",
 		models_suffix=".obj",
 		shared_texture="linetrack_stn.png",
 		description="Station/Stop Line",
 		formats={},
+		liquids_pointable=true,
+		suitable_substrate=suitable_substrate,
 		get_additional_definiton = function(def, preset, suffix, rotation)
 			return {
 				after_place_node = adef.after_place_node,
@@ -119,7 +132,7 @@ if minetest.get_modpath("advtrains_line_automation") ~= nil then
 				advtrains = adef.advtrains,
 				groups = {
 					advtrains_track=1,
-					advtrains_track_line=1,
+					advtrains_track_waterline=1,
 					save_in_at_nodedb=1,
 					dig_immediate=2,
 					not_in_creative_inventory=1,
@@ -138,7 +151,7 @@ end
 advtrains.register_wagon("boat", {
 	mesh="linetrack_boat.obj",
 	textures = {"linetrack_boat.png"},
-	drives_on={line=true},
+	drives_on={waterline=true},
 	max_speed=10,
 	seats = {
 		{
@@ -225,7 +238,7 @@ advtrains.register_wagon("boat", {
 	door_entry={-1, 1},
 	visual_size = {x=1, y=1},
 	wagon_span=2,
-	collisionbox = {-2.0,-2.0,-2.0, 2.0,4.0,2.0},
+	collisionbox = {-2.0,-3.0,-2.0, 2.0,4.0,2.0},
 	is_locomotive=true,
 	drops={"default:steelblock 4"},
 	horn_sound = "advtrains_subway_horn",
