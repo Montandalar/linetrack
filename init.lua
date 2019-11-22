@@ -240,6 +240,7 @@ advtrains.register_wagon("boat", {
 	wagon_span=2,
 	collisionbox = {-2.0,-3.0,-2.0, 2.0,4.0,2.0},
 	is_locomotive=true,
+	wagon_width=5,
 	drops={"default:steelblock 4"},
 	horn_sound = "advtrains_subway_horn",
 	glow = -1, --supposed to disable effect of light to texture color, so that the entity always appears as full-bright
