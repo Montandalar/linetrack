@@ -112,8 +112,6 @@ if atlatc ~= nil then
 end
 
 if minetest.get_modpath("advtrains_line_automation") ~= nil then
-	local adef = minetest.registered_nodes["advtrains_line_automation:dtrack_stop_st"]
-	
 	advtrains.register_tracks("waterline", {
 		nodename_prefix="linetrack:watertrack_stn",
 		texture_prefix="advtrains_ltrack_stn",
@@ -126,10 +124,11 @@ if minetest.get_modpath("advtrains_line_automation") ~= nil then
 		suitable_substrate=suitable_substrate,
 		get_additional_definiton = function(def, preset, suffix, rotation)
 			return {
-				after_place_node = adef.after_place_node,
-				after_dig_node = adef.after_dig_node,
-				on_rightclick = adef.on_rightclick,
-				advtrains = adef.advtrains,
+				after_place_node = atlatc.active.after_place_node,
+				after_dig_node = atlatc.active.after_dig_node,
+				-- Not necessary as the formspec to open is stored in the metadata
+				--on_rightclick = ...
+				advtrains = atlatc.active.trackdef_advtrains_defs,
 				groups = {
 					advtrains_track=1,
 					advtrains_track_waterline=1,
